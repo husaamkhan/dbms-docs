@@ -1,6 +1,6 @@
-title: Gameboy Color Emulator Blog
-description: Building a Gameboy Color emulator in Rust
-baseurl: "/gameboy-blog"
+title: Database Management System Docs
+description: Building a DBMS in C
+baseurl: "/dbms-docs"
 url: "https://husaamkhan.com"
 
 markdown: kramdown
