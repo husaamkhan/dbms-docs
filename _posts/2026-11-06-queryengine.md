@@ -19,6 +19,7 @@ During lexical analysis, the lexer converts the input query into a sequence of t
 The lexer's responsibility is to read the input character by character and identify the individual components of a query.
 
 recognizes several categories of tokens, listed below:
+
 | Category | Examples |
 |----------|----------|
 | Words    | Employees, select, salary |
@@ -32,11 +33,13 @@ recognizes several categories of tokens, listed below:
 Words are initially classified generically. The parser subsequently determines whether a word represents a relational algebra operator, a logical operator, or an identifier based on its context. This means there aren't any words that are strictly reserved for certain uses, allowing the user to use them more freely.
 
 For example, consider the following query:
+
 ```
 select[salary > 50000](Employees)
 ```
 
 The lexer produces a sequence of tokens representing the individual components:
+
 ```
 WORD("select")
 LBRACKET
