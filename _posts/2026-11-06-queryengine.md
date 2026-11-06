@@ -3,19 +3,19 @@ title: "Query Engine"
 date: 2026-11-06
 ---
 
-# Overview
+## Overview
 The query engine is responsible for interpreting and executing queries against the database. It currently supports a custom relational algebra language, providing operations for retrieving and transforming relational data.
 
 The project initially began as a smaller university assignment for a databases course, where the objective was to implement a relational algebra engine. However, I wanted to take the project further and develop it into a larger personal project.
 
 As the scope of the project expands, the query engine will evolve alongside it. The eventual goal is to introduce support for a subset of SQL, providing a more practical interface for interacting with the database while retaining the underlying query processing functionality.
 
-# Query Processing
+## Query Processing
 The current query engine follows a traditional two-stage process: lexical analysis and syntactic analysis.
 
 During lexical analysis, the lexer converts the input query into a sequence of tokens. The token stream is given to the parser to perform syntactic analysis, in which it interprets those tokens according to the language grammar and constructs a parse tree.
 
-## Lexical Analysis
+### Lexical Analysis
 The lexer's responsibility is to read the input character by character and identify the individual components of a query.
 
 recognizes several categories of tokens, listed below:
@@ -54,7 +54,7 @@ RPAREN
 
 Tokenization also handles comments, string literals, and malformed input, reporting lexical errors when unexpected characters or unterminated strings are encountered.
 
-## Syntactic Analysis
+### Syntactic Analysis
 The parser consumes the token stream produced by the lexer and constructs a parse tree according to the relational algebra grammar.
 
 The parser uses a recursive-descent parsing approach, with individual functions responsible for recognizing different grammatical constructs.
@@ -70,7 +70,7 @@ For example:
 
 These functions call one another recursively to process nested expressions.
 
-### Parse Tree Representation
+#### Parse Tree Representation
 The parser produces a tree that represents each query in such a way that the system can later traverse it to understand the program's operations and their structure.
 
 Each TreeNode contains an array of tokens, along with pointers to its left and right children and its parent. This allows the tree to represent both unary and binary operations, as well as constructs containing multiple attributes or values.
@@ -79,7 +79,7 @@ The parser also maintains a linked list of statements, allowing multiple express
 
 Nodes are allocated using the project's arena allocator, keeping memory management centralized and avoiding individual allocations for every node
 
-#### Selection
+##### Selection
 Consider the following relational algebra expression:
 ```
 select[salary > 50000](Employees)
@@ -103,7 +103,7 @@ Its left child represents the selection condition, which is itself a comparison 
 
 This structure allows the query engine to distinguish between the condition being evaluated and the relation against which it is evaluated.
 
-#### Projection and Selection
+##### Projection and Selection
 Consider a slightly more complex expression:
 ```
 project[name, salary](
@@ -129,7 +129,7 @@ The projection node contains an attribute list as its left child and the nested 
 
 The tree therefore preserves the order and structure of the operations specified by the query.
 
-#### Binary Operations
+##### Binary Operations
 Binary relational algebra operations, such as union and intersection, use their left and right children to represent their respective operands.
 
 For example:
@@ -145,7 +145,7 @@ PROGRAM
     └── Contractors
 ```
 
-#### Relation Definitions
+##### Relation Definitions
 In addition to query expressions, the parser supports relation definitions containing attribute lists and tuple data.
 
 For example:
@@ -162,7 +162,7 @@ The root represents the assignment operator, with the relation name and its attr
 
 This allows relation definitions and query expressions to coexist within the same parsed program.
 
-# Future Direction
+## Future Direction
 The current implementation is designed specifically around relational algebra. Although this provides a useful foundation for query processing, the long-term objective is to support a subset of SQL.
 
 Introducing SQL will require additional language constructs and a different grammar. However, the intention is to avoid coupling query execution to any particular query language.
