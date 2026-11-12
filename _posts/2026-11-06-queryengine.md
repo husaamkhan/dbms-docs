@@ -3,6 +3,19 @@ title: "Query Engine"
 date: 2026-11-06
 ---
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Query Processing](#query-processing)
+  - [Lexical Analysis](#lexical-analysis)
+  - [Syntactic Analysis](#syntactic-analysis)
+    - [Parse Tree Representation](#parse-tree-representation)
+      - [Selection](#selection)
+      - [Projection and Selection](#projection-and-selection)
+      - [Binary Operations](#binary-operations)
+      - [Relation Definitions](#relation-definitions)
+- [Future Direction](#future-direction)
+
 ## Overview
 The query engine is responsible for interpreting and executing queries against the database. It currently supports a custom relational algebra language, providing operations for retrieving and transforming relational data.
 
