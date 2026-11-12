@@ -3,7 +3,7 @@ title: "Query Representation"
 date: 2026-11-06
 ---
 
-# Contents
+## Contents
 
 - [Purpose](#purpose)
 - [Representation](#representation)
@@ -14,17 +14,17 @@ date: 2026-11-06
 - [Examples](#examples)
 - [Memory Management](#memory-management)
 
-# Purpose
+## Purpose
 The query representation provides a common structure for representing queries. It supports the project's eventual transition from Relational Algebra to SQL and allows for an easier execution engine implementation.
 
 Since the project initially began as an assignment focused on developing a Relational Algebra frontend, Relational Algebra will continue to be used while developing a prototype of the database system. As the project expands, both Relational Algebra and SQL will be able to use the same query executor by translating their respective parse trees into a shared query representation.
 
 The query representation also explicitly defines the operations required to execute a query and how they are composed. This eliminates the need for the executor to interpret frontend-specific instructions or determine the sequence of operations required for execution, allowing it to focus solely on executing the provided operations.
 
-# Representation
+## Representation
 The representation consists of a Query structure and an Expression structure. Queries describe the relational operations that make up a query, while expressions describe conditions and values used by those operations.
 
-## Queries
+### Queries
 Relational operations are represented using the Query structure, with the QueryType enumeration identifying the operation being represented.
 
 The following operations are supported:
@@ -44,7 +44,7 @@ The Query structure's anonymous union stores the data associated with that opera
 
 Queries can reference other queries as their inputs, allowing multiple relational operations to be composed into a single recursive structure.  
 
-## Expressions
+### Expressions
 
 Expressions are represented using the Expression structure, with the ExpressionType enumeration identifying the type of expression.
 
@@ -61,7 +61,7 @@ The following expression types are supported:
 
 Like the Query structure, Expression structures also use an anonymous union to store associated data, and can recursively contain other expressions. This allows complex conditions to be represented through combinations of comparisons and logical operators.
 
-### Values
+#### Values
 The Value structure represents a literal value used within an expression. Its type field identifies the value's data type, while its union stores the corresponding value.
 
 The ValueType enumeration currently supports:
@@ -70,7 +70,7 @@ The ValueType enumeration currently supports:
 - `VALUE_INT`: An integer, stored as a long long.
 - `VALUE_STR`: A string, stored as a character pointer.
 
-### Comparison Operators
+#### Comparison Operators
 The ComparisonOperator enumeration identifies the comparison performed by an EXPR_COMPARISON expression.
 
 The supported operators are:
@@ -84,11 +84,11 @@ The supported operators are:
 | `COMP_LESS_EQUAL` | Less than or equal to |
 | `COMP_GREATER_EQUAL` | Greater than or equal to |
 
-## Examples
+### Examples
 The following examples illustrate how relational operations and expressions are composed into query representations.
 
 
-### Projection
+#### Projection
 Consider the following query:
 ```
 project[Name, Age](Students)
@@ -104,7 +104,7 @@ QUERY_PROJECT
     └── "Age"
 ```
 
-### Filtering
+#### Filtering
 
 Consider the following query:
 ```
@@ -126,7 +126,7 @@ QUERY_FILTER
             └── integer: 18
 ```
 
-### Combining Operations
+#### Combining Operations
 Consider the following query:
 ```
 project[Name](select[Age > 18](Students))
@@ -150,7 +150,7 @@ QUERY_PROJECT
     └── "Name"
 ```
 
-### Compound Conditions
+#### Compound Conditions
 Consider the following query:
 ```
 select[Age > 18 and Grade >= 80](Students)
@@ -180,7 +180,7 @@ QUERY_FILTER
                 └── integer: 80
 ```
 
-# Memory Management
+## Memory Management
 
 The query representation uses arena allocation to simplify memory management. Query representations are composed of recursively nested structures that may reference numerous other queries, expressions, and values. Releasing these structures individually would require recursively traversing the representation and freeing each allocation.
 
